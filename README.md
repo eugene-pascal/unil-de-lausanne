@@ -1,66 +1,121 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# UNIL - Service Status Monitor
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project displays the status of internal and external web services for the University of Lausanne (UNIL).  
+Developed as part of a technical challenge for CSE UNIL.
 
-## About Laravel
+## Quick Start
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 1. Clone the repository
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+git clone https://github.com/eugene-pascal/unil-de-lausanne.git
+cd unil-de-lausanne
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Copy the environment configuration
 
-## Learning Laravel
+```bash
+cp .env_copy .env
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+> The application uses **SQLite** by default.  
+> It is set to`DB_CONNECTION=sqlite` .
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 3. Install dependencies
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer install
+```
 
-## Laravel Sponsors
+### 4. Run the database migrations
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+php artisan migrate
+```
 
-### Premium Partners
+### 5. Run the service status check
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+php artisan services:check
+```
 
-## Contributing
+> You can add this command to your `cron` for automated periodic checks.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Technical Overview
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Service Configuration
 
-## Security Vulnerabilities
+All services are defined in the config file:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+config/services_status.php
+```
 
-## License
+Each service is described like this:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```php
+'Compilatio' => [
+    'url' => 'https://app.compilatio.net/api/public/alerts',
+    'type' => 'json',
+    'check' => [
+        'param' => 'status.message',
+        'value' => 'OK',
+        'error' => 'data.alerts'
+    ]
+],
+```
+
+> This allows you to define which JSON response fields indicate success or failure.
+
+---
+
+###  Architecture
+
+#### Models
+
+- `app/Models/ServiceStatus.php` - stores history of checks
+- `app/Models/ServiceFailure.php` - stores service downtime (failures)
+
+#### Service check logic
+
+Located in `app/Services/Checkers/`:
+
+- `HtmlServiceChecker.php`
+- `JsonServiceChecker.php`
+- `SoapServiceChecker.php`
+- `ServiceCheckerInterface.php`
+- `ServiceCheckerFactory.php` - selects the appropriate checker based on service type
+
+> This architecture is modular and easy to maintain and extend.
+
+#### Uptime calculation
+
+Implemented in `app/Services/Uptimes/ServiceCalculateUptimes.php`  
+This class performs uptime calculations using models, but is fully decoupled from them — allowing for **flexible and reusable logic**.
+
+---
+
+### Status constants
+
+Service statuses are defined using an enum:
+
+```php
+app/Enums/ServiceStatusEnum.php
+```
+
+> Improves code readability and reduces risk of typos.
+
+---
+
+## Demo
+
+[https://unil-test.mrpascal.com/](https://unil-test.mrpascal.com/)
+
+---
+
+## Contact
+
+Developed by [@eugene-pascal](https://github.com/eugene-pascal)  
+For questions: `webradsupport@gmail.com`
