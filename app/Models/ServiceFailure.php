@@ -12,6 +12,7 @@ class ServiceFailure extends Model
 
     protected $fillable = [
         'service_name',
+        'type',
         'started_at',
         'ended_at',
         'duration_seconds',
@@ -22,7 +23,7 @@ class ServiceFailure extends Model
         'ended_at' => 'datetime',
     ];
 
-    public function getDurationFormattedAttribute(): string
+    public function getDurationFormattedAttr(): string
     {
         if (!$this->duration_seconds) {
             return '-';

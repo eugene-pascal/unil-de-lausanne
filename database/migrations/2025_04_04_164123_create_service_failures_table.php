@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('service_failures', function (Blueprint $table) {
             $table->id();
             $table->string('service_name'); // config/services_status.php look at services.KEYS
+            $table->char('type',4)->index();
             $table->timestamp('started_at');
             $table->timestamp('ended_at')->nullable();
             $table->unsignedInteger('duration_seconds')->nullable();

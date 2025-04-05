@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\ServiceStatusEnum;
+use App\Models\ServiceFailure;
 use App\Services\Checkers\ServiceCheckerFactory;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -46,6 +47,42 @@ class CheckServices extends Command
                 'extra'         => null,
                 'checked_at'    => Carbon::now(),
             ]);
+
+            if ($status['status'] !== ServiceStatusEnum::FUNCTIONAL) {
+                // if we have already created record then pass it
+                $existingFailure = ServiceFailure::where('service_name', $key)
+                    ->whereNull('ended_at')
+                    ->first();
+
+                if (!$existingFailure) {
+                    ServiceFailure::create([
+                        'service_name'     => $key,
+                        'type'             => $service['type'],
+                        'started_at'       => now(),
+                        'ended_at'         => null,
+                        'duration_seconds' => null,
+                    ]);
+                    $this->warn("Issue is fixed for {$key}");
+                }
+
+            } else {
+                // if we have open record then close it
+                $openFailure = ServiceFailure::where('service_name', $key)
+                    ->whereNull('ended_at')
+                    ->first();
+
+                if ($openFailure) {
+                    $end = now();
+                    $duration = $end->diffInSeconds($openFailure->started_at);
+
+                    $openFailure->update([
+                        'ended_at'         => $end,
+                        'duration_seconds' => $duration,
+                    ]);
+
+                    $this->info("Issue was closed for {$key} (duration: " . $openFailure->getDurationFormattedAttr() . ")");
+                }
+            }
         }
     }
 }
