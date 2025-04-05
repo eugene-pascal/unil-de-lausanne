@@ -74,13 +74,13 @@ class CheckServices extends Command
                 if ($openFailure) {
                     $end = now();
                     $duration = $openFailure->started_at->diffInSeconds($end);
-                    
+
                     $openFailure->update([
                         'ended_at'         => $end,
                         'duration_seconds' => $duration,
                     ]);
 
-                    $this->info("Issue was closed for {$key} (duration: " . $openFailure->getDurationFormattedAttr() . ")");
+                    $this->info("------> Issue was closed for {$key} (duration: " . $openFailure->getDurationFormattedAttr() . ")");
                 }
             }
         }

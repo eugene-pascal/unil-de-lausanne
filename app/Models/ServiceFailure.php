@@ -26,7 +26,11 @@ class ServiceFailure extends Model
     public function getDurationFormattedAttr(): string
     {
         if (!$this->duration_seconds) {
-            return '-';
+            if ($this->started_at) {
+                $duration = $this->started_at->diffInSeconds(now());
+                return gmdate('H:i:s', $duration);
+            }
+            return '-//-';
         }
         return gmdate('H:i:s', $this->duration_seconds);
     }
