@@ -117,5 +117,6 @@ app/Enums/ServiceStatusEnum.php
 
 ## Contact
 
-Developed by [@eugene-pascal](https://github.com/eugene-pascal)  
+Developed by [@eugene-pascal](https://github.com/eugene-pascal)
+CV [https://cv.mrpascal.com/](https://cv.mrpascal.com/)  
 For questions: `webradsupport@gmail.com`
