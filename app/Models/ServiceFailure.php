@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ServiceFailure extends Model
 {
@@ -33,5 +34,11 @@ class ServiceFailure extends Model
             return '-//-';
         }
         return gmdate('H:i:s', $this->duration_seconds);
+    }
+
+    public function lastStatus(): HasOne
+    {
+        return $this->hasOne(ServiceStatus::class, 'service_name', 'service_name')
+            ->latest('checked_at');
     }
 }

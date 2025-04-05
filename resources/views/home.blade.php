@@ -83,6 +83,7 @@
             <th>Début</th>
             <th>Fin</th>
             <th>Durée</th>
+            <th>Issues</th>
         </tr>
         </thead>
         <tbody>
@@ -94,6 +95,18 @@
                     {{ $failure->ended_at ? $failure->ended_at->format('Y-m-d H:i') : 'En cours...' }}
                 </td>
                 <td>{{ $failure->getDurationFormattedAttr() }}</td>
+                <td>
+                    @if (!empty($failure->lastStatus?->issues))
+                        <div class="bg-light p-3 rounded">
+                            @foreach($failure->lastStatus->issues as $issue)
+                                <div class="d-flex align-items-center mb-1">
+                                    <span class="text-warning me-2">!!️</span>
+                                    <small class="text-dark">{{ $issue }}</small>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </td>
             </tr>
         @empty
             <tr>

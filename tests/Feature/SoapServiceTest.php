@@ -33,7 +33,7 @@ class SoapServiceTest extends TestCase
                 $token
             ]);
 
-            fwrite(STDOUT, "➡️ SOAP response:\n" . print_r($response, true) . "\n\n[success] = ". (isset($response['success']) ? ($response['success'] ? 'True' : 'False' ) : '' ));
+            fwrite(STDOUT, "-> SOAP response:\n" . print_r($response, true) . "\n\n[success] = ". (isset($response['success']) ? ($response['success'] ? 'True' : 'False' ) : '' ));
             $this->assertNotNull($response);
             $this->assertArrayHasKey('success', $response);
             $this->assertArrayHasKey('current_issues', $response);

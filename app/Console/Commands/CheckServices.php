@@ -36,7 +36,11 @@ class CheckServices extends Command
             $checker = ServiceCheckerFactory::make($service);
             $status = $checker->check($service);
 
-            $this->info("✔ {$key}::{$service['type']}: {$status['status']->value}");
+            if ($status['status'] == ServiceStatusEnum::FUNCTIONAL) {
+                $this->info("> {$key}::{$service['type']}: {$status['status']->value}");
+            } else {
+                $this->error("> {$key}::{$service['type']}: {$status['status']->value}");
+            }
 
             ServiceStatus::create([
                 'service_name'  => $key,
