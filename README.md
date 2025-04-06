@@ -45,7 +45,8 @@ php artisan migrate
 php artisan services:check
 ```
 
-> You can add this command to your `cron` for automated periodic checks.
+> You can add this command to your `cron` for automated periodic checks. Below example with cron:
+> * * * * * cd /path/to/your/project && /usr/bin/php artisan services:check > /dev/null 2>&1
 
 ---
 
@@ -132,5 +133,7 @@ app/Enums/ServiceStatusEnum.php
 ## Contact
 
 Developed by [@eugene-pascal](https://github.com/eugene-pascal)
+
 CV [https://cv.mrpascal.com/](https://cv.mrpascal.com/)  
-For questions: `webradsupport@gmail.com`
+
+For questions: `webradsupport@gmail.com` or `me@mrpascal.com`
