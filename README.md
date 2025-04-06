@@ -27,13 +27,19 @@ cp .env_copy .env
 composer install
 ```
 
-### 4. Run the database migrations
+### 4. Generate key 
+
+```bash
+php artisan key:generate
+```
+
+### 5. Run the database migrations
 
 ```bash
 php artisan migrate
 ```
 
-### 5. Run the service status check
+### 6. Run the service status check
 
 ```bash
 php artisan services:check
@@ -42,6 +48,14 @@ php artisan services:check
 > You can add this command to your `cron` for automated periodic checks.
 
 ---
+
+
+### 7. Launch your server locally 
+
+```bash
+php artisan serve
+```
+> Open link http://127.0.0.1:8000
 
 ## Technical Overview
 
