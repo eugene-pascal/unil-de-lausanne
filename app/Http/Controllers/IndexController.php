@@ -24,5 +24,18 @@ class IndexController extends Controller
             'serviceDate1st'  => optional(ServiceStatus::orderBy('checked_at', 'asc')->first())->checked_at?->format('Y-m-d H:i:s')
         ]);
     }
+
+
+    public function statuses(Request $request)
+    {
+        $statuses = ServiceStatus::orderByDesc('checked_at')->paginate(20);
+        return view('listStatuses', compact('statuses'));
+    }
+
+    public function issues(Request $request)
+    {
+        $issues = ServiceFailure::orderByDesc('id')->paginate(20);
+        return view('listIssues', compact('issues'));
+    }
 }
 
