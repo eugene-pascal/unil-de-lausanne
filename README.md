@@ -83,6 +83,7 @@ Each service is described like this:
 ```
 
 > This allows you to define which JSON response fields indicate success or failure.
+> like "check.params" indicates on field SUCCESS / FAILURE and "check.value" contains value on SUCCESS else take message from "check.error"
 
 ---
 
@@ -90,8 +91,8 @@ Each service is described like this:
 
 #### Models
 
-- `app/Models/ServiceStatus.php` - stores history of checks
-- `app/Models/ServiceFailure.php` - stores service downtime (failures)
+- `app/Models/ServiceStatus.php` - model stores history of checks
+- `app/Models/ServiceFailure.php` - model stores service downtime (failures)
 
 #### Service check logic
 
@@ -108,7 +109,7 @@ Located in `app/Services/Checkers/`:
 #### Uptime calculation
 
 Implemented in `app/Services/Uptimes/ServiceCalculateUptimes.php`  
-This class performs uptime calculations using models, but is fully decoupled from them — allowing for **flexible and reusable logic**.
+This class performs uptime calculations using models, but is fully decoupled from them - allowing for **flexible and reusable logic**.
 
 ---
 
