@@ -102,18 +102,16 @@ Located in `app/Services/Checkers/`:
 - `JsonServiceChecker.php`
 - `SoapServiceChecker.php`
 - `ServiceCheckerInterface.php`
-- `ServiceCheckerFactory.php` - selects the appropriate checker based on service type
+- `ServiceCheckerFactory.php` - selects the appropriate checker based on service **type**
 
-> This architecture is modular and easy to maintain and extend.
+> Each type of page has its own checker. This architecture is modular and easy to maintain and extend.
 
 #### Uptime calculation
 
 Implemented in `app/Services/Uptimes/ServiceCalculateUptimes.php`  
-This class performs uptime calculations using models, but is fully decoupled from them - allowing for **flexible and reusable logic**.
+This class performs uptime calculations using **app/Models/**, but is fully decoupled from them - allowing for **flexible and reusable logic**.
 
----
-
-### Status constants
+#### Status constants
 
 Service statuses are defined using an enum:
 
