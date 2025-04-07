@@ -80,10 +80,28 @@ Each service is described like this:
         'error' => 'data.alerts'
     ]
 ],
+'Recorder' => [
+        'url' => 'https://cse.unil.ch/miris/?q=POL-A',
+        'type' => 'html',
+        'check' => [
+            'function' =>'detectServiceRecorder',
+        ]
+    ],
+'WordPress' => [
+        'url' => 'https://sepia2.unil.ch/wp/',
+        'type' => 'html',
+        'check' => [
+            'search' =>'Aucun site n&rsquo;est disponible à cette adresse',
+            'success' => false,
+            'errorMessage' => 'Aucun site n\'est disponible à cette adresse.',
+        ]
+    ],
+
 ```
 
-> This allows you to define which JSON response fields indicate success or failure.
+> This allows you to define which JSON/SOAP response fields indicate success or failure.
 > like "check.params" indicates on field SUCCESS / FAILURE and "check.value" contains value on SUCCESS else take message from "check.error"
+> Similar thing I did for HTML page also. Some HTML page has "'function' =>'detectServiceRecorder' in the config". It indicates that the system needs to launch extra function to analyze the content HTML page.
 
 ---
 
