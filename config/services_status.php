@@ -7,7 +7,8 @@ return [
             'type' => 'html',
             'check' => [
                 'search' =>'Aucun site n&rsquo;est disponible à cette adresse',
-                'success' => false
+                'success' => false,
+                'errorMessage' => 'Aucun site n&rsquo;est disponible à cette adresse',
             ]
         ],
 
@@ -40,7 +41,8 @@ return [
             'type' => 'html',
             'check' => [
                 'search' =>'<td>POL-A</td><td class="online">',
-                'success' => true
+                'success' => true,
+                'errorMessage' => 'not online'
             ]
         ],
 

@@ -31,6 +31,10 @@ class HtmlServiceChecker implements ServiceCheckerInterface
                     $returnData['status'] = ($contains === $expected)
                         ? ServiceStatusEnum::FUNCTIONAL
                         : ServiceStatusEnum::NON_FUNCTIONAL;
+
+                    if ($returnData['status'] === ServiceStatusEnum::NON_FUNCTIONAL) {
+                        $returnData['error'][] = $serviceConfig['check']['errorMessage'] ?? '';
+                    }
                 }
             } else {
                 $returnData['status'] = ServiceStatusEnum::NON_FUNCTIONAL;
