@@ -40,9 +40,10 @@ return [
             'url' => 'https://cse.unil.ch/miris/?q=POL-A',
             'type' => 'html',
             'check' => [
-                'search' =>'<td>POL-A</td><td class="online">',
+                'search' =>'',
+                'function' =>'detectServiceRecorder',
                 'success' => true,
-                'errorMessage' => 'not online'
+                'errorMessage' => ''
             ]
         ],
 
