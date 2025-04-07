@@ -23,11 +23,17 @@ class HtmlServiceChecker implements ServiceCheckerInterface
             $body = $response->body();
             $returnData['code'] = $response->status();
 
-            if (str_contains($body, 'Aucun site n&rsquo;est disponible à cette adresse')) {
-                $returnData['status'] = ServiceStatusEnum::NON_FUNCTIONAL;
-                $returnData['error'][] = 'Aucun site n&rsquo;est disponible à cette adresse';
-            } elseif ($response->ok()) {
+            if ($response->ok()) {
                 $returnData['status'] = ServiceStatusEnum::FUNCTIONAL;
+                if (!empty($serviceConfig['check'])&&is_array($serviceConfig['check'])) {
+                    $contains = str_contains($body, $serviceConfig['check']['search']);
+                    $expected = $serviceConfig['check']['success'];
+                    $returnData['status'] = ($contains === $expected)
+                        ? ServiceStatusEnum::FUNCTIONAL
+                        : ServiceStatusEnum::NON_FUNCTIONAL;
+                }
+            } else {
+                $returnData['status'] = ServiceStatusEnum::NON_FUNCTIONAL;
             }
 
         } catch (RequestException $e) {

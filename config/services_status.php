@@ -5,6 +5,10 @@ return [
         'WordPress' => [
             'url' => 'https://sepia2.unil.ch/wp/',
             'type' => 'html',
+            'check' => [
+                'search' =>'Aucun site n&rsquo;est disponible à cette adresse',
+                'success' => false
+            ]
         ],
 
         'BookStack' => [
@@ -34,6 +38,10 @@ return [
         'Recorder' => [
             'url' => 'https://cse.unil.ch/miris/?q=POL-A',
             'type' => 'html',
+            'check' => [
+                'search' =>'<td>POL-A</td><td class="online">',
+                'success' => true
+            ]
         ],
 
         'SOAPService' => [
