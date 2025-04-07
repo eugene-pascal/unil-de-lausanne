@@ -42,7 +42,7 @@ class ServiceFailure extends Model
         $remainingSeconds = $seconds % 60;
 
         if ($days > 0) {
-            return sprintf('%dd %02d:%02d:%02d', $days, $hours, $minutes, $remainingSeconds);
+            return sprintf('%djour(s) %02d:%02d:%02d', $days, $hours, $minutes, $remainingSeconds);
         }
 
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds);
