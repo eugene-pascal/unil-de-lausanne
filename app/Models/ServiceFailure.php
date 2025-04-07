@@ -26,15 +26,28 @@ class ServiceFailure extends Model
 
     public function getDurationFormattedAttr(): string
     {
-        if (!$this->duration_seconds) {
+        $seconds = $this->duration_seconds;
+
+        if (!$seconds) {
             if ($this->started_at) {
-                $duration = $this->started_at->diffInSeconds(now());
-                return gmdate('H:i:s', $duration);
+                $seconds = $this->started_at->diffInSeconds(now());
+            } else {
+                return '-//-';
             }
-            return '-//-';
         }
-        return gmdate('H:i:s', $this->duration_seconds);
+
+        $days = floor($seconds / 86400);
+        $hours = floor(($seconds % 86400) / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+        $remainingSeconds = $seconds % 60;
+
+        if ($days > 0) {
+            return sprintf('%dd %02d:%02d:%02d', $days, $hours, $minutes, $remainingSeconds);
+        }
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds);
     }
+
 
     public function lastStatus(): HasOne
     {
