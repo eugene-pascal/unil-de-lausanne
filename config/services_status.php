@@ -8,7 +8,7 @@ return [
             'check' => [
                 'search' =>'Aucun site n&rsquo;est disponible à cette adresse',
                 'success' => false,
-                'errorMessage' => 'Aucun site n&rsquo;est disponible à cette adresse',
+                'errorMessage' => 'Aucun site n\'est disponible à cette adresse.',
             ]
         ],
 
