@@ -36,8 +36,11 @@ class SoapServiceChecker implements ServiceCheckerInterface
             $resultOnSuccess = data_get($returnData['full_response'], $serviceConfig['check']['param'], '');
             if ($resultOnSuccess != $serviceConfig['check']['value']) {
                 $returnData['status'] = ServiceStatusEnum::NON_FUNCTIONAL;
-                if (!empty($serviceConfig['check']['error'])) {
-                    $returnData['error'] = data_get($returnData['full_response'], $serviceConfig['check']['error'], []);
+            }
+            if (!empty($serviceConfig['check']['error'])) {
+                $errorArr = data_get($returnData['full_response'], $serviceConfig['check']['error'], []);
+                if (!empty($errorArr)) {
+                    $returnData['error'] = $errorArr;
                 }
             }
 
