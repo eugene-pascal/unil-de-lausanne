@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ServiceStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -52,6 +53,7 @@ class ServiceFailure extends Model
     public function lastStatus(): HasOne
     {
         return $this->hasOne(ServiceStatus::class, 'service_name', 'service_name')
+            ->where('status', ServiceStatusEnum::NON_FUNCTIONAL->value)
             ->latest('checked_at');
     }
 }
