@@ -53,7 +53,7 @@ class ServiceFailure extends Model
     public function lastStatus(): HasOne
     {
         return $this->hasOne(ServiceStatus::class, 'service_name', 'service_name')
-            ->where('status', ServiceStatusEnum::NON_FUNCTIONAL->value)
+            ->where('status', '<>', ServiceStatusEnum::FUNCTIONAL->value)
             ->latest('checked_at');
     }
 }
